@@ -1,0 +1,62 @@
+nl_m_M0_l1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 0 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M0_l1
+nl_m_M0_l15	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 0 --family nonlinear --nl-scale 1.5 --seed 0 --tag nl_m_M0_l15
+nl_m_M16	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M16
+nl_m_M32	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 32 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M32
+nl_m_M8	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 8 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M8
+nl_m_M64	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 64 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M64
+nl_m_M4	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 4 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M4
+nl_m_M128	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 128 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M128
+nl_m_M2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M2
+nl_m_M16_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --family nonlinear --nl-scale 1.0 --seed 1 --tag nl_m_M16_s1
+nl_m_M32_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 32 --family nonlinear --nl-scale 1.0 --seed 1 --tag nl_m_M32_s1
+nl_m_M16_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --family nonlinear --nl-scale 1.0 --seed 2 --tag nl_m_M16_s2
+nl_m_M32_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 32 --family nonlinear --nl-scale 1.0 --seed 2 --tag nl_m_M32_s2
+nl_m_M24	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 24 --family nonlinear --nl-scale 1.0 --seed 0 --tag nl_m_M24
+mech_m_M16_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --seed 1 --save-ckpt-every 500 --tag mech_m_M16_s1
+mech_m_M2048_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2048 --seed 1 --save-ckpt-every 500 --tag mech_m_M2048_s1
+mech_m_M2_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2 --seed 1 --save-ckpt-every 500 --tag mech_m_M2_s1
+mech_m_M16_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --seed 2 --save-ckpt-every 500 --tag mech_m_M16_s2
+mech_m_M2048_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2048 --seed 2 --save-ckpt-every 500 --tag mech_m_M2048_s2
+mech_m_M2_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2 --seed 2 --save-ckpt-every 500 --tag mech_m_M2_s2
+nlB_m_M16	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --family nonlinear --nl-scale 1.0 --seed 0 --pool-seed-base 2000 --tag nlB_m_M16
+nlC_m_M16	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --family nonlinear --nl-scale 1.0 --seed 0 --pool-seed-base 3000 --tag nlC_m_M16
+mech_m_M16_s0r	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --seed 0 --save-ckpt-every 20000 --tag mech_m_M16_s0r
+mech_m_M2048_s0r	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2048 --seed 0 --save-ckpt-every 20000 --tag mech_m_M2048_s0r
+mech_m_M2_s0r	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2 --seed 0 --save-ckpt-every 20000 --tag mech_m_M2_s0r
+mech_s_M2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2 --layers 2 --dmodel 32 --heads 2 --seed 0 --save-ckpt-every 500 --tag mech_s_M2
+mech_s_M16	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 2 --dmodel 32 --heads 2 --seed 0 --save-ckpt-every 500 --tag mech_s_M16
+mech_s_M2048	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 2048 --layers 2 --dmodel 32 --heads 2 --seed 0 --save-ckpt-every 500 --tag mech_s_M2048
+m_M12_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --seed 0 --tag m_M12_s0
+poolB_m_M12	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --seed 0 --pool-seed-base 2000 --tag poolB_m_M12
+poolC_m_M12	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --seed 0 --pool-seed-base 3000 --tag poolC_m_M12
+m_M10_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 10 --seed 0 --tag m_M10_s0
+poolB_m_M10	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 10 --seed 0 --pool-seed-base 2000 --tag poolB_m_M10
+poolC_m_M10	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 10 --seed 0 --pool-seed-base 3000 --tag poolC_m_M10
+m_M14_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --seed 0 --tag m_M14_s0
+poolB_m_M14	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --seed 0 --pool-seed-base 2000 --tag poolB_m_M14
+poolC_m_M14	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --seed 0 --pool-seed-base 3000 --tag poolC_m_M14
+sp_m_M32_s0r	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 32 --family sparse --seed 0 --tag sp_m_M32_s0r
+sp_m_M128_s0r	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 128 --family sparse --seed 0 --tag sp_m_M128_s0r
+rr_m_M8_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 8 --seed 0 --tag rr_m_M8_s0
+rr_m_M32_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 32 --seed 0 --tag rr_m_M32_s0
+rr_m_M128_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 128 --seed 0 --tag rr_m_M128_s0
+wd_M16_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 3 --dmodel 128 --heads 4 --seed 0 --tag wd_M16_s0
+dp_M16_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 6 --dmodel 64 --heads 4 --seed 0 --tag dp_M16_s0
+wd_M16_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 3 --dmodel 128 --heads 4 --seed 1 --tag wd_M16_s1
+dp_M16_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 6 --dmodel 64 --heads 4 --seed 1 --tag dp_M16_s1
+l_M12_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --layers 4 --dmodel 128 --heads 4 --seed 0 --tag l_M12_s0
+l_M14_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --layers 4 --dmodel 128 --heads 4 --seed 0 --tag l_M14_s0
+d2_m_M10	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 10 --dim 2 --seed 0 --tag d2_m_M10
+d2_m_M12	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --dim 2 --seed 0 --tag d2_m_M12
+d2_m_M14	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --dim 2 --seed 0 --tag d2_m_M14
+d6_m_M20	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 20 --dim 6 --seed 0 --tag d6_m_M20
+d6_m_M24	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 24 --dim 6 --seed 0 --tag d6_m_M24
+d6_m_M18	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 18 --dim 6 --seed 0 --tag d6_m_M18
+s_M6_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 6 --layers 2 --dmodel 32 --heads 2 --seed 0 --tag s_M6_s0
+poolB_s_M6	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 6 --layers 2 --dmodel 32 --heads 2 --seed 0 --pool-seed-base 2000 --tag poolB_s_M6
+s_M10_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 10 --layers 2 --dmodel 32 --heads 2 --seed 0 --tag s_M10_s0
+poolB_s_M10	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 10 --layers 2 --dmodel 32 --heads 2 --seed 0 --pool-seed-base 2000 --tag poolB_s_M10
+s_M12_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --layers 2 --dmodel 32 --heads 2 --seed 0 --tag s_M12_s0
+poolB_s_M12	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --layers 2 --dmodel 32 --heads 2 --seed 0 --pool-seed-base 2000 --tag poolB_s_M12
+poolB_s_M8	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 8 --layers 2 --dmodel 32 --heads 2 --seed 0 --pool-seed-base 2000 --tag poolB_s_M8
+poolB_s_M16	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 2 --dmodel 32 --heads 2 --seed 0 --pool-seed-base 2000 --tag poolB_s_M16

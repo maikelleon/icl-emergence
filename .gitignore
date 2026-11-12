@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Job-queue state written by code/runq.py
+code/claims/
+code/done/
+code/logs/
+code/runq.log
+code/queue.txt
+code/STOP
+
+# Campaign-driver process ids
+code/sweep*.pid
+
+# Resume files written during training
+code/results/resume_*.pt

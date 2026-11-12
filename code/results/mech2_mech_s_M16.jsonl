@@ -1,0 +1,49 @@
+{"type": "probe", "step": 500, "omega": -0.0178, "wR2": -0.0779, "ymass": [[0.4817, 0.6102], [0.5087, 0.5219]]}
+{"type": "probe", "step": 1000, "omega": 0.0672, "wR2": -0.1306, "ymass": [[0.5369, 0.4957], [0.5154, 0.5163]]}
+{"type": "probe", "step": 1500, "omega": 0.0998, "wR2": -0.1243, "ymass": [[0.4817, 0.4181], [0.526, 0.5556]]}
+{"type": "probe", "step": 2000, "omega": 0.097, "wR2": -0.0903, "ymass": [[0.4433, 0.4432], [0.5529, 0.546]]}
+{"type": "probe", "step": 2500, "omega": 0.1035, "wR2": -0.1103, "ymass": [[0.458, 0.4434], [0.5304, 0.533]]}
+{"type": "probe", "step": 3000, "omega": 0.18, "wR2": -0.0701, "ymass": [[0.506, 0.4064], [0.5156, 0.5031]]}
+{"type": "probe", "step": 3500, "omega": 0.2153, "wR2": -0.0713, "ymass": [[0.3841, 0.3671], [0.533, 0.5033]]}
+{"type": "probe", "step": 4000, "omega": 0.2412, "wR2": -0.099, "ymass": [[0.3928, 0.384], [0.5106, 0.4932]]}
+{"type": "probe", "step": 4500, "omega": 0.2483, "wR2": -0.107, "ymass": [[0.3412, 0.3674], [0.4826, 0.4808]]}
+{"type": "probe", "step": 5000, "omega": 0.2506, "wR2": -0.0883, "ymass": [[0.3907, 0.3768], [0.4875, 0.485]]}
+{"type": "probe", "step": 5500, "omega": 0.1537, "wR2": -0.0479, "ymass": [[0.4255, 0.4427], [0.5526, 0.5092]]}
+{"type": "probe", "step": 6000, "omega": 0.4068, "wR2": -0.0915, "ymass": [[0.4008, 0.3902], [0.5545, 0.5037]]}
+{"type": "probe", "step": 6500, "omega": 0.4105, "wR2": -0.0483, "ymass": [[0.3639, 0.3859], [0.5168, 0.474]]}
+{"type": "probe", "step": 7000, "omega": 0.4528, "wR2": -0.0739, "ymass": [[0.3331, 0.3928], [0.5216, 0.4776]]}
+{"type": "probe", "step": 7500, "omega": 0.4916, "wR2": -0.0589, "ymass": [[0.3526, 0.3946], [0.517, 0.4785]]}
+{"type": "probe", "step": 8000, "omega": 0.4238, "wR2": -0.0612, "ymass": [[0.3723, 0.3951], [0.5036, 0.4748]]}
+{"type": "probe", "step": 8500, "omega": 0.4471, "wR2": -0.046, "ymass": [[0.3632, 0.416], [0.4977, 0.4757]]}
+{"type": "probe", "step": 9000, "omega": 0.4036, "wR2": -0.0602, "ymass": [[0.3458, 0.4251], [0.4934, 0.4874]]}
+{"type": "probe", "step": 9500, "omega": 0.4332, "wR2": -0.0586, "ymass": [[0.3814, 0.4268], [0.4986, 0.4924]]}
+{"type": "probe", "step": 10000, "omega": 0.4639, "wR2": -0.0715, "ymass": [[0.3729, 0.4672], [0.5018, 0.4788]]}
+{"type": "probe", "step": 10500, "omega": 0.4069, "wR2": -0.0692, "ymass": [[0.3473, 0.4361], [0.4931, 0.4887]]}
+{"type": "probe", "step": 11000, "omega": 0.4243, "wR2": -0.0658, "ymass": [[0.3452, 0.4396], [0.4984, 0.4854]]}
+{"type": "probe", "step": 11500, "omega": 0.4083, "wR2": -0.0766, "ymass": [[0.3527, 0.4623], [0.4979, 0.4909]]}
+{"type": "probe", "step": 12000, "omega": 0.4252, "wR2": -0.0851, "ymass": [[0.3434, 0.4576], [0.4955, 0.4794]]}
+{"type": "probe", "step": 12500, "omega": 0.3828, "wR2": -0.0578, "ymass": [[0.3576, 0.4679], [0.4854, 0.4824]]}
+{"type": "probe", "step": 13000, "omega": 0.4105, "wR2": -0.0623, "ymass": [[0.3566, 0.4743], [0.486, 0.4871]]}
+{"type": "probe", "step": 13500, "omega": 0.4081, "wR2": -0.0699, "ymass": [[0.3532, 0.4708], [0.4833, 0.4675]]}
+{"type": "probe", "step": 14000, "omega": 0.4003, "wR2": -0.0807, "ymass": [[0.3609, 0.4627], [0.4778, 0.4726]]}
+{"type": "probe", "step": 14500, "omega": 0.3752, "wR2": -0.0676, "ymass": [[0.3624, 0.4723], [0.487, 0.4747]]}
+{"type": "probe", "step": 15000, "omega": 0.371, "wR2": -0.0686, "ymass": [[0.3519, 0.4771], [0.4798, 0.4711]]}
+{"type": "probe", "step": 15500, "omega": 0.3873, "wR2": -0.0713, "ymass": [[0.3593, 0.4766], [0.4858, 0.4759]]}
+{"type": "probe", "step": 16000, "omega": 0.3715, "wR2": -0.0637, "ymass": [[0.3649, 0.474], [0.4755, 0.4642]]}
+{"type": "probe", "step": 16500, "omega": 0.3924, "wR2": -0.0661, "ymass": [[0.3694, 0.4871], [0.4836, 0.4796]]}
+{"type": "probe", "step": 17000, "omega": 0.3878, "wR2": -0.0694, "ymass": [[0.3662, 0.4893], [0.481, 0.4678]]}
+{"type": "probe", "step": 17500, "omega": 0.3805, "wR2": -0.0628, "ymass": [[0.3595, 0.4815], [0.472, 0.4653]]}
+{"type": "probe", "step": 18000, "omega": 0.3763, "wR2": -0.0679, "ymass": [[0.3586, 0.4824], [0.4754, 0.4634]]}
+{"type": "probe", "step": 18500, "omega": 0.3927, "wR2": -0.0656, "ymass": [[0.3693, 0.4876], [0.4761, 0.4658]]}
+{"type": "probe", "step": 19000, "omega": 0.3932, "wR2": -0.0688, "ymass": [[0.3638, 0.4883], [0.4728, 0.4648]]}
+{"type": "probe", "step": 19500, "omega": 0.3847, "wR2": -0.0679, "ymass": [[0.3766, 0.4864], [0.4685, 0.4687]]}
+{"type": "probe", "step": 20000, "omega": 0.3871, "wR2": -0.0607, "ymass": [[0.3657, 0.4854], [0.4656, 0.4656]]}
+{"type": "intact", "mse": 0.8655501008033752, "rho": 7.994705988939475, "omega": 0.38708900335909524, "mse_pool": 0.2706352770328522, "mse_pool_dmmse": 0.06383716315031052}
+{"type": "ablate", "layer": 0, "head": 0, "mode": "zero", "omega": -0.0189, "mse_ratio_vs_intact": 5.1095, "rho": 40.8488, "pool_mse_ratio_vs_intact": 16.3732, "pool_mse": 4.43116}
+{"type": "ablate", "layer": 0, "head": 0, "mode": "mean", "omega": -0.0306, "mse_ratio_vs_intact": 3.4126, "rho": 27.2828, "pool_mse_ratio_vs_intact": 9.6766, "pool_mse": 2.61882}
+{"type": "ablate", "layer": 0, "head": 1, "mode": "zero", "omega": 0.1981, "mse_ratio_vs_intact": 2.2962, "rho": 18.3572, "pool_mse_ratio_vs_intact": 4.1959, "pool_mse": 1.13557}
+{"type": "ablate", "layer": 0, "head": 1, "mode": "mean", "omega": 0.203, "mse_ratio_vs_intact": 2.059, "rho": 16.4613, "pool_mse_ratio_vs_intact": 3.1909, "pool_mse": 0.86357}
+{"type": "ablate", "layer": 1, "head": 0, "mode": "zero", "omega": -0.0789, "mse_ratio_vs_intact": 2.7812, "rho": 22.2346, "pool_mse_ratio_vs_intact": 6.614, "pool_mse": 1.78997}
+{"type": "ablate", "layer": 1, "head": 0, "mode": "mean", "omega": -0.0436, "mse_ratio_vs_intact": 2.7673, "rho": 22.1237, "pool_mse_ratio_vs_intact": 6.0817, "pool_mse": 1.64592}
+{"type": "ablate", "layer": 1, "head": 1, "mode": "zero", "omega": -0.0046, "mse_ratio_vs_intact": 2.8012, "rho": 22.3948, "pool_mse_ratio_vs_intact": 6.3283, "pool_mse": 1.71267}
+{"type": "ablate", "layer": 1, "head": 1, "mode": "mean", "omega": 0.0191, "mse_ratio_vs_intact": 2.8532, "rho": 22.8101, "pool_mse_ratio_vs_intact": 5.9701, "pool_mse": 1.61573}

@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite them as below."
+title: "When Does In-Context Learning Emerge, and Does It Endure? Code and results"
+authors:
+  - family-names: Leon
+    given-names: Maikel
+    affiliation: "University of Miami Business School"
+    email: mleon@miami.edu
+    orcid: "https://orcid.org/0000-0002-8849-4521"
+version: 1.0.0
+date-released: 2026-11-11
+license: MIT
+repository-code: "https://github.com/maikelleon/icl-emergence"
+keywords:
+  - in-context learning
+  - transformers
+  - memorization
+  - generalization
+  - task diversity
+  - emergence
