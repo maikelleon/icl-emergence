@@ -2,9 +2,15 @@
 
 Style: white background, DejaVu Sans, no in-figure titles, panel letters (A),
 (B), ... at the top left, light grid, no top/right spines, 1.8-pt lines,
-white-edged markers. Architectures keep fixed colors in every figure; task
-diversity uses an ordinal blue scale; task families use fixed colors.
-Usage: python3 rev_figs.py fig1 fig2 fig3 fig4"""
+white-edged markers. Each color has one meaning in every figure:
+  architectures   Small blue, Medium orange, Large aqua, XLarge brown;
+  task diversity  one ordinal magenta ramp, light (M = 2) to dark (M = 2048);
+  task families   dense linear in the Medium orange (dimension shown by line style
+                  and marker), sparse indigo, nonlinear black;
+  references      ridge and dMMSE as gray dashed lines; zero lines are thin and solid.
+The palettes pass the dataviz validator (categorical all-pairs for the architectures,
+ordinal checks for the diversity ramp).
+Usage: python3 rev_figs.py fig1 fig2 fig3 fig4 fig5"""
 import glob, json, math, os, re, sys
 import matplotlib
 matplotlib.use('Agg')
@@ -16,13 +22,14 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'figs')
 os.makedirs(OUT, exist_ok=True)
 
 INK, INK2, MUTED, GRID, BASE = '#111111', '#3d3d3a', '#77766f', '#e4e3dc', '#b9b8ad'
-ARCH = {'s': '#2a78d6', 'm': '#eb6834', 'l': '#1baf7a', 'xl': '#8a63d2',
-        'wd': '#b8860b', 'dp': '#6b4226'}
+ARCH = {'s': '#2a78d6', 'm': '#eb6834', 'l': '#1baf7a', 'xl': '#8a5a00'}
 ARCHNAME = {'s': 'Small', 'm': 'Medium', 'l': 'Large', 'xl': 'XLarge', 'wd': 'Wide', 'dp': 'Deep'}
-DIV = {2: '#9ec5f4', 4: '#7fb0ee', 8: '#5598e7', 12: '#3f88de', 16: '#2a78d6', 32: '#1c5cab',
-       64: '#14488a', 128: '#104281', 2048: '#0a2a55'}
-FAM = {'d2': '#9ec5f4', 'd4': '#2a78d6', 'd6': '#0a2a55', 'sparse': '#eb6834',
-       'nonlinear': '#c2185b'}
+DIV = {2: '#e393c6', 8: '#da74b7', 12: '#cc56a6', 16: '#b73e92', 32: '#9e2e7d',
+       64: '#832367', 128: '#671b51', 2048: '#4d133c'}
+DENSE = ARCH['m']                       # dense linear family (all runs are Medium)
+DSTYLE = {2: (':', '^'), 4: ('-', 'o'), 6: ('--', 's')}   # input dimension -> line, marker
+FAM = {'sparse': '#5343ac', 'nonlinear': '#111111'}
+REF = dict(color='#77766f', lw=1.3, ls=(0, (5, 2.5)))   # reference predictors (ridge, dMMSE)
 
 plt.rcParams.update({
     'font.family': 'DejaVu Sans', 'font.size': 9, 'axes.labelsize': 9.5,
@@ -45,6 +52,13 @@ def letter(ax, s):
 def log2x(ax, ticks):
     ax.set_xscale('log', base=2)
     ax.set_xticks(ticks, [str(t) for t in ticks])
+    ax.minorticks_off()
+
+
+def logy(ax, ticks):
+    """Logarithmic y axis with plain-number tick labels, shared by every log panel."""
+    ax.set_yscale('log')
+    ax.set_yticks(ticks, [f'{t:g}' for t in ticks])
     ax.minorticks_off()
 
 
@@ -91,18 +105,18 @@ def fig1():
         b.fill_between(rM, rlo, rhi, color=ARCH[size], alpha=0.15, lw=0)
     dm = [(M, ra.cell_finals('m', M, 'A')[0][1]) for M in grid if ra.cell_finals('m', M, 'A')]
     b.plot([M for M, _ in dm], [e['mse_fresh_dmmse'] / e['mse_fresh_ridge'] for _, e in dm],
-           '--', color=MUTED, lw=1.3, label='dMMSE reference')
-    a.axhline(0, color=BASE, lw=1, ls='--', zorder=1)
+           label='dMMSE reference', **REF)
+    a.axhline(0, color=BASE, lw=0.9, zorder=1)
     a.set_ylim(-1.0, 1.0); log2x(a, [2, 8, 32, 128, 512, 2048])
     a.set_xlabel('task diversity $M$'); a.set_ylabel(r'order parameter $\Omega$')
     a.text(0.03, 0.96, r'$+1$: ridge (ICL)', transform=a.transAxes, color=MUTED, va='top', fontsize=8)
     a.text(0.03, 0.04, r'$-1$: dMMSE (memorization)', transform=a.transAxes, color=MUTED, fontsize=8)
     a.legend(loc='lower right', ncol=1)
     b.axhline(1, color=BASE, lw=1)
-    b.set_yscale('log'); log2x(b, [2, 8, 32, 128, 512, 2048, 16384])
+    logy(b, [1, 2, 5, 10, 20, 50]); log2x(b, [2, 8, 32, 128, 512, 2048, 16384])
     b.set_xticks([2, 8, 32, 128, 512, 2048, 16384], ['2', '8', '32', '128', '512', '2048', r'$\infty$'])
     b.set_xlabel('task diversity $M$'); b.set_ylabel(r'error ratio $\rho$ (model / ridge)')
-    b.legend(loc='upper right', handles=[Line2D([], [], color=MUTED, ls='--', lw=1.3, label='dMMSE reference')])
+    b.legend(loc='upper right', handles=[Line2D([], [], label='dMMSE reference', **REF)])
     letter(a, 'A'); letter(b, 'B')
 
     # (C) fine-resolution boundary
@@ -124,7 +138,7 @@ def fig1():
             c.plot([mstar], [yoff], 'D', color=ARCH[size], ms=4.0, **MK, zorder=4)
     c.axhspan(-0.9, -0.52, color='#f4f3ee', zorder=0, lw=0)
     c.text(4.0, -0.545, r'crossing $M^{*}$ (90% interval)', color=MUTED, fontsize=7.2, va='bottom')
-    c.axhline(0, color=BASE, lw=1, ls='--', zorder=1)
+    c.axhline(0, color=BASE, lw=0.9, zorder=1)
     log2x(c, [4, 6, 8, 10, 12, 16, 24, 32]); c.set_xlim(3.7, 34)
     c.set_ylim(-0.9, 0.9); c.set_yticks([-0.5, -0.25, 0, 0.25, 0.5, 0.75])
     c.set_xlabel('task diversity $M$ (fine grid)'); c.set_ylabel(r'order parameter $\Omega$')
@@ -154,7 +168,7 @@ def fig1():
         d.plot(Ms, mr, '-o', color=ARCH['m'], label=r'$\delta_r$ (distance to ridge)', **MK, zorder=3)
         d.plot(Ms, mg, '--s', color=ARCH['m'], mfc='white', mec=ARCH['m'], mew=1.0, ms=4.2,
                label=r'$\delta_g$ (distance to dMMSE)', zorder=3)
-        d.set_yscale('log'); log2x(d, [2, 8, 32, 128, 512, 2048]); d.set_ylim(0.008, 2.5)
+        logy(d, [0.01, 0.03, 0.1, 0.3, 1]); log2x(d, [2, 8, 32, 128, 512, 2048]); d.set_ylim(0.008, 2.5)
         d.set_xlabel('task diversity $M$ (Medium)'); d.set_ylabel('normalized squared distance')
         d.legend(loc='lower left')
     letter(d, 'D')
@@ -162,8 +176,8 @@ def fig1():
     save(fig, 'fig1_phase_diagram.png')
 
 
-# ---------------------------------------------------------------- Figure 2
-def fig2():
+# ---------------------------------------------------------------- Figure 3
+def fig3():
     fig, (a, b, c) = plt.subplots(1, 3, figsize=(7.4, 2.75), gridspec_kw={'width_ratios': [1, 1.1, 1.05]})
     dy = {128: 0.02, 2048: -0.1, 8: 0.04, 2: -0.08}
     for M in (2, 8, 16, 32, 128, 2048):
@@ -171,7 +185,7 @@ def fig2():
         a.plot([e['step'] / 1000 for e in evs], [ra.om(e) for e in evs], '-', color=DIV[M], lw=1.7)
         a.annotate(f'$M={M}$', (20, ra.om(evs[-1]) + dy.get(M, 0)), xytext=(4, 0),
                    textcoords='offset points', color=DIV[M], fontsize=7.6, va='center')
-    a.axhline(0, color=BASE, lw=1, ls='--', zorder=1)
+    a.axhline(0, color=BASE, lw=0.9, zorder=1)
     a.set_ylim(-1, 1); a.set_xlim(0, 27.5); a.set_xticks([0, 5, 10, 15, 20])
     a.set_xlabel('training step (thousands)'); a.set_ylabel(r'order parameter $\Omega$')
     letter(a, 'A')
@@ -191,7 +205,7 @@ def fig2():
         if seed == 0:
             b.annotate(f'$M={M}$', (100, ra.om(evs[-1])), xytext=(4, 0), textcoords='offset points',
                        color=DIV[M], fontsize=8, va='center')
-    b.axhline(0, color=BASE, lw=1, ls='--', zorder=1)
+    b.axhline(0, color=BASE, lw=0.9, zorder=1)
     b.set_ylim(-1, 1); b.set_xlim(0, 118); b.set_xlabel('training step (thousands)')
     b.set_ylabel(r'order parameter $\Omega$')
     letter(b, 'B')
@@ -205,17 +219,17 @@ def fig2():
         c.plot([o20], [i], 'o', color='white', mec=ARCH[size], mew=1.3, ms=5)
         c.plot([o100], [i], 'o', color=ARCH[size], ms=5.4, **MK)
         labels.append(f'{ARCHNAME[size]} $M$={M} s{seed}')
-    c.axvline(0, color=BASE, lw=1, ls='--')
+    c.axvline(0, color=BASE, lw=0.9)
     c.set_yticks(range(len(labels)), labels, fontsize=7.2)
     c.set_xlim(-0.6, 1.0); c.set_xlabel(r'$\Omega$ at 20k (open) and 100k (filled)')
     c.grid(axis='y', visible=False)
     letter(c, 'C')
     fig.tight_layout(w_pad=1.4)
-    save(fig, 'fig2_dynamics_stability.png')
+    save(fig, 'fig3_dynamics_stability.png')
 
 
 
-# ---------------------------------------------------------------- Figure 3
+# ---------------------------------------------------------------- Figure 4
 def load_mech(tag, v2=True):
     """Probe trajectory and ablation records; v2 files carry zero and mean ablation."""
     p = os.path.join(ra.RES, (f'mech2_{tag}.jsonl' if v2 else f'mech_{tag}.jsonl'))
@@ -264,7 +278,7 @@ def top_head(ab, layer=0, mode='zero'):
     return max(c, key=lambda r: r['mse_ratio_vs_intact'])['head'] if c else None
 
 
-def fig3():
+def fig4():
     fig, axs = plt.subplots(2, 2, figsize=(7.2, 5.3))
     (a, b), (c, d) = axs
     for M in (2, 16, 2048):
@@ -278,7 +292,7 @@ def fig3():
         if runs:
             a.annotate(f'$M={M}$', (20, runs[0][1][-1]['omega']), xytext=(4, 0), textcoords='offset points',
                        color=DIV[M], fontsize=7.8, va='center')
-    a.axhline(0, color=BASE, lw=1, ls='--', zorder=1)
+    a.axhline(0, color=BASE, lw=0.9, zorder=1)
     a.set_xlim(0, 25.5); a.set_xticks([0, 5, 10, 15, 20]); a.set_ylim(-0.8, 0.9)
     a.set_xlabel('training step (thousands)'); a.set_ylabel(r'order parameter $\Omega$')
     a.legend(handles=[Line2D([], [], color=MUTED, lw=1.7, label='seed 0'),
@@ -311,10 +325,10 @@ def fig3():
                         ax.plot(range(1, len(vals) + 1), vals, '-o', mec='white', mew=0.6, **kw)
                     else:
                         ax.plot(range(1, len(vals) + 1), vals, '--o', mfc='white', mec=DIV[M], mew=0.9, **kw)
-        ax.set_yscale('log'); ax.axhline(1, color=BASE, lw=1)
+        logy(ax, [1, 2, 5, 10, 20, 50]); ax.axhline(1, color=BASE, lw=1)
         ax.set_xticks([1, 3, 6, 9, 12]); ax.set_xlabel('head rank (by ablation impact)')
-    c.set_ylabel('fresh-task error, ablated / intact')
-    d.set_ylabel('pool-context error, ablated / intact')
+    c.set_ylabel('relative fresh-task error')
+    d.set_ylabel('relative pool-context error')
     c.set_ylim(0.9, 60); d.set_ylim(0.9, 60)
     c.legend(handles=[Line2D([], [], color=DIV[M], lw=1.4, label=f'$M={M}$') for M in (2048, 16, 2)] +
              [Line2D([], [], color=MUTED, lw=1.2, marker='o', ms=3.6, mec=MUTED, label='zero-ablation'),
@@ -322,10 +336,10 @@ def fig3():
              loc='upper right', fontsize=7.2, handlelength=2.6)
     letter(c, 'C'); letter(d, 'D')
     fig.tight_layout(w_pad=2.0, h_pad=1.5)
-    save(fig, 'fig3_mechanism.png')
+    save(fig, 'fig4_mechanism.png')
 
 
-# ---------------------------------------------------------------- Figure 4
+# ---------------------------------------------------------------- Figure 5
 def family_curve(prefix_fn, Ms):
     xs, means, pts = [], [], []
     for M in Ms:
@@ -335,67 +349,95 @@ def family_curve(prefix_fn, Ms):
     return xs, means, pts
 
 
-def fig4():
-    fig, (a, b, c) = plt.subplots(1, 3, figsize=(7.4, 3.45))
-    a.axvspan(4, 16, color=FAM['sparse'], alpha=0.08, zorder=0)
-    a.text(8, 0.93, 'preregistered\nsparse interval', color=FAM['sparse'], fontsize=7, ha='center', va='top')
-    dense = {
-        2: lambda M: [f'd2_m_M{M}', f'd2_m_M{M}_s1', f'd2_m_M{M}_s2'],
-        4: lambda M: [f'm_M{M}', f'm_M{M}_s0', f'm_M{M}_s1', f'm_M{M}_s2'],
-        6: lambda M: [f'd6_m_M{M}', f'd6_m_M{M}_s1', f'd6_m_M{M}_s2'],
-    }
-    for d, fn in dense.items():
-        xs, means, _ = family_curve(fn, [2, 4, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 128])
-        a.plot(xs, means, '-o', color=FAM[f'd{d}'], ms=3.4, **MK, label=f'dense, $d={d}$', zorder=3)
+DENSE_RUNS = {
+    2: lambda M: [f'd2_m_M{M}', f'd2_m_M{M}_s1', f'd2_m_M{M}_s2'],
+    4: lambda M: [f'm_M{M}', f'm_M{M}_s0', f'm_M{M}_s1', f'm_M{M}_s2'],
+    6: lambda M: [f'd6_m_M{M}', f'd6_m_M{M}_s1', f'd6_m_M{M}_s2'],
+}
+
+
+def dense_line(ax, d, Ms, **kw):
+    ls, mk = DSTYLE[d]
+    xs, means, _ = family_curve(DENSE_RUNS[d], Ms)
+    ax.plot(xs, means, ls=ls, marker=mk, color=DENSE, ms=3.6, **MK, label=f'dense, $d={d}$', zorder=3, **kw)
+
+
+def fig5():
+    fig, (a, b) = plt.subplots(1, 2, figsize=(7.2, 3.3))
+    a.axvspan(4, 16, color=FAM['sparse'], alpha=0.07, zorder=0)
+    a.text(8, 0.93, 'preregistered\nsparse interval', color=INK2, fontsize=7, ha='center', va='top')
+    for d in (2, 4, 6):
+        dense_line(a, d, [2, 4, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 128])
     xs, means, pts = family_curve(lambda M: [f'sp_m_M{M}_s0', f'sp_m_M{M}_s1'], [2, 4, 8, 16, 32, 128])
-    a.plot(xs, means, '-o', color=FAM['sparse'], ms=3.6, **MK, label='sparse (held out)', zorder=4)
+    a.plot(xs, means, '-o', color=FAM['sparse'], ms=3.8, **MK, label='sparse (held out)', zorder=4)
     xs, means, pts = family_curve(lambda M: [f'spm_m_M{M}_s0', f'spm_m_M{M}_s1'], [4, 8, 16, 32, 64])
-    a.plot(xs, means, '--o', color=FAM['sparse'], ms=3.4, mfc='white', mec=FAM['sparse'], mew=1.0,
+    a.plot(xs, means, '--o', color=FAM['sparse'], ms=3.6, mfc='white', mec=FAM['sparse'], mew=1.0,
            label='sparse, signal-matched', zorder=4)
-    a.axhline(0, color=BASE, lw=1, ls='--', zorder=1)
+    a.axhline(0, color=BASE, lw=0.9, zorder=1)
     log2x(a, [2, 4, 8, 16, 32, 64, 128]); a.set_ylim(-1.0, 1.0)
     a.set_xlabel('task diversity $M$ (Medium)'); a.set_ylabel(r'order parameter $\Omega$')
-    a.legend(loc='upper center', bbox_to_anchor=(0.5, -0.24), ncol=2, fontsize=6.6, handlelength=1.8,
-             columnspacing=0.9)
+    a.legend(loc='upper center', bbox_to_anchor=(0.5, -0.22), ncol=2, fontsize=7.0, handlelength=2.4,
+             columnspacing=1.0)
     letter(a, 'A')
     xs, means, pts = family_curve(lambda M: [f'nl_m_M{M}', f'nl_m_M{M}_s1', f'nl_m_M{M}_s2'],
                                   [2, 4, 8, 16, 24, 32, 64, 128])
     for M, v in zip(xs, pts):
-        b.plot([M] * len(v), v, 'o', color=FAM['nonlinear'], ms=2.6, alpha=0.45, mew=0)
+        b.plot([M] * len(v), v, 'o', color=FAM['nonlinear'], ms=2.6, alpha=0.35, mew=0)
     for t in ('nlB_m_M16', 'nlC_m_M16'):
         e = ra.final(t)
         if e:
-            b.plot([16 * 1.06], [ra.om(e)], 'o', mfc='white', mec=FAM['nonlinear'], mew=0.9, ms=3.4, zorder=5)
+            b.plot([16 * 1.06], [ra.om(e)], 'o', mfc='white', mec=FAM['nonlinear'], mew=0.9, ms=3.6, zorder=5)
     b.plot(xs, means, '-o', color=FAM['nonlinear'], ms=3.8, **MK, label='nonlinear (random features)', zorder=4)
-    xd, md, _ = family_curve(dense[4], [2, 4, 8, 10, 12, 14, 16, 32, 64, 128])
-    b.plot(xd, md, '-o', color=FAM['d4'], ms=3.2, **MK, alpha=0.8, label='dense, $d=4$', zorder=3)
-    b.axhline(0, color=BASE, lw=1, ls='--', zorder=1)
+    dense_line(b, 4, [2, 4, 8, 10, 12, 14, 16, 32, 64, 128])
+    b.axhline(0, color=BASE, lw=0.9, zorder=1)
     log2x(b, [2, 4, 8, 16, 32, 64, 128]); b.set_ylim(-1.0, 1.0)
     b.set_xlabel('task diversity $M$ (Medium)'); b.set_ylabel(r'order parameter $\Omega$')
     b.legend(handles=[Line2D([], [], color=FAM['nonlinear'], marker='o', ms=3.8, mec='white', label='nonlinear (random features)'),
-                      Line2D([], [], color=FAM['nonlinear'], lw=0, marker='o', ms=3.4, mfc='white', mec=FAM['nonlinear'], label='nonlinear, other pools'),
-                      Line2D([], [], color=FAM['d4'], marker='o', ms=3.2, mec='white', label='dense, $d=4$')],
-             loc='upper center', bbox_to_anchor=(0.5, -0.24), ncol=1, fontsize=6.6, handlelength=1.8)
+                      Line2D([], [], color=FAM['nonlinear'], lw=0, marker='o', ms=3.6, mfc='white', mec=FAM['nonlinear'], label='nonlinear, other pools'),
+                      Line2D([], [], color=DENSE, marker='o', ms=3.6, mec='white', label='dense, $d=4$')],
+             loc='upper center', bbox_to_anchor=(0.5, -0.22), ncol=2, fontsize=7.0, handlelength=2.4,
+             columnspacing=1.0)
     letter(b, 'B')
+    fig.tight_layout(w_pad=2.2)
+    save(fig, 'fig5_families.png')
+
+
+# ---------------------------------------------------------------- Figure 2
+def fig2():
+    """Demonstration diversity at inference: error against the rank of the demonstration
+    inputs (A) and the reduction from rank one to rank four against pretraining diversity (B)."""
     p = os.path.join(ra.RES, 'rev_demo.json')
-    if os.path.exists(p):
-        res = [r for r in json.load(open(p)) if r['kind'] == 'rank']
-        byM, ridge = {}, {}
-        for r in res:
-            byM.setdefault(r['M'], {}).setdefault(r['level'], []).append(r['mse'])
-            ridge[r['level']] = r['mse_ridge']
-        for M in sorted(byM):
-            lv = sorted(byM[M])
-            c.plot(lv, [sum(byM[M][l]) / len(byM[M][l]) for l in lv], '-o', color=DIV.get(M, '#555555'),
-                   ms=3.4, **MK, label=f'$M={M}$', zorder=3)
-        lv = sorted(ridge)
-        c.plot(lv, [ridge[l] for l in lv], '--', color=INK2, lw=1.3, label='ridge (Bayes)', zorder=4)
-        c.set_yscale('log'); c.set_xticks([1, 2, 3, 4])
-        c.set_xlabel('rank of demonstration inputs'); c.set_ylabel('fresh-task error (MSE)')
-        c.legend(loc='upper center', bbox_to_anchor=(0.5, -0.24), ncol=3, fontsize=6.6, handlelength=1.6, columnspacing=0.8)
-    letter(c, 'C')
-    fig.tight_layout(w_pad=1.3)
-    save(fig, 'fig4_families.png')
+    res = [r for r in json.load(open(p)) if r['kind'] == 'rank']
+    byM, ridge = {}, {}
+    for r in res:
+        byM.setdefault(r['M'], {}).setdefault(r['level'], []).append(r['mse'])
+        ridge[r['level']] = r['mse_ridge']
+    fig, (a, b) = plt.subplots(1, 2, figsize=(7.2, 3.0), gridspec_kw={'width_ratios': [1, 1]})
+    for M in sorted(byM):
+        lv = sorted(byM[M])
+        a.plot(lv, [sum(byM[M][l]) / len(byM[M][l]) for l in lv], '-o', color=DIV[M], ms=3.8, **MK,
+               label=f'$M={M}$', zorder=3)
+    lv = sorted(ridge)
+    a.plot(lv, [ridge[l] for l in lv], label='ridge (Bayes)', zorder=4, **REF)
+    logy(a, [0.1, 0.2, 0.5, 1, 2, 5]); a.set_xticks([1, 2, 3, 4])
+    a.set_ylim(0.085, 8.5)
+    a.set_xlabel('rank of demonstration inputs'); a.set_ylabel('fresh-task error (MSE)')
+    a.legend(loc='lower left', ncol=2, fontsize=7.0, handlelength=2.0, columnspacing=0.9)
+    letter(a, 'A')
+    Ms = sorted(byM)
+    red = [(sum(byM[M][1]) / len(byM[M][1])) / (sum(byM[M][4]) / len(byM[M][4])) for M in Ms]
+    b.plot(Ms, red, '-', color=INK2, lw=1.0, zorder=2)
+    for M, v in zip(Ms, red):
+        b.plot([M], [v], 'o', color=DIV[M], ms=5.6, **MK, zorder=3)
+    b.axhline(ridge[1] / ridge[4], label='ridge (Bayes)', **REF)
+    logy(b, [1, 2, 5, 10, 20, 50]); log2x(b, [2, 8, 32, 128, 512, 2048])
+    b.set_ylim(0.8, 60)
+    b.set_xlabel('task diversity $M$ in pretraining')
+    b.set_ylabel('error reduction, rank 1 to rank 4')
+    b.legend(loc='upper left', handles=[Line2D([], [], label='ridge (Bayes)', **REF)])
+    letter(b, 'B')
+    fig.tight_layout(w_pad=2.4)
+    save(fig, 'fig2_demonstrations.png')
 
 if __name__ == '__main__':
     for name in sys.argv[1:]:

@@ -15,7 +15,7 @@ draws, and it probes the attention heads that each solution relies on.
 
 This repository holds the code that produced every number, table, and figure in the manuscript;
 the raw evaluation log of each of the 212 training runs; the final weights of the 62 runs added in
-the revision; the checkpoints of the revision's instrumented runs; and the four figures.
+the revision; the checkpoints of the revision's instrumented runs; and the five figures.
 
 ## Contents
 
@@ -46,12 +46,12 @@ code/
                       demonstration diversity at inference, sparse-family reference distances
   rev_distinct.py     distinguishability of pool tasks (normalized dMMSE posterior entropy)
   rev_mech.py         mechanism summaries across seeds and architectures
-  rev_figs.py         Figures 1 to 4
+  rev_figs.py         Figures 1 to 5
   rev_tables.py       Tables 2 and 4 (LaTeX)
   requirements.txt    pinned package versions
   results/            logs (*.jsonl), analysis outputs (rev_*.json), final weights (final_*.pt),
                       and checkpoints (ckpt_*.pt)
-  figs/               Figures 1 to 4 as they appear in the manuscript
+  figs/               Figures 1 to 5 as they appear in the manuscript
 ```
 
 ## Requirements
@@ -70,16 +70,16 @@ A CPU is sufficient for everything, including training. The CPU-only build of Py
 These steps read the shipped logs and weights and need no training. Run them from `code/`:
 
 ```
-python3 rev_figs.py fig1 fig2 fig3 fig4   # Figures 1 to 4, written to figs/
-python3 rev_tables.py                      # Table 2 and Table 4 (LaTeX), printed
-python3 rev_analysis.py                    # every aggregate quoted in the text, printed by section
-python3 rev_mech.py                        # mechanism summaries (results/rev_mech_summary.json)
-python3 rev_infer.py boot                  # bootstrap standard errors (results/rev_boot.json)
-python3 rev_infer.py boot_paired           # paired standard errors (results/rev_boot_paired.json)
-python3 rev_infer.py demo                  # demonstration diversity (results/rev_demo.json)
-python3 rev_infer.py demo_summary          # the summary of rev_demo.json quoted in the text
-python3 rev_infer.py sparse                # sparse-family distances (results/rev_sparse.json)
-python3 rev_distinct.py                    # distinguishability (results/rev_distinct.json)
+python3 rev_figs.py fig1 fig2 fig3 fig4 fig5   # Figures 1 to 5, written to figs/
+python3 rev_tables.py                          # Table 2 and Table 4 (LaTeX), printed
+python3 rev_analysis.py                        # every aggregate quoted in the text, printed by section
+python3 rev_mech.py                            # mechanism summaries (results/rev_mech_summary.json)
+python3 rev_infer.py boot                      # bootstrap standard errors (results/rev_boot.json)
+python3 rev_infer.py boot_paired               # paired standard errors (results/rev_boot_paired.json)
+python3 rev_infer.py demo                      # demonstration diversity (results/rev_demo.json)
+python3 rev_infer.py demo_summary              # the summary of rev_demo.json quoted in the text
+python3 rev_infer.py sparse                    # sparse-family distances (results/rev_sparse.json)
+python3 rev_distinct.py                        # distinguishability (results/rev_distinct.json)
 ```
 
 Each command finishes in seconds to a few minutes on a laptop CPU. `rev_analysis.py table` (or
@@ -127,7 +127,7 @@ its wall-clock field (`secs`). Other hardware or library versions can change the
 ## Verification
 
 On a clean copy of this repository, with the pinned versions on a Linux x86 CPU, the commands
-above regenerate the four figures, the six analysis files in `results/`, and the probe output of
+above regenerate the five figures, the six analysis files in `results/`, and the probe output of
 `mech_s_M2` byte for byte, and they print Tables 2 and 4 exactly as they appear in the manuscript.
 Two runs retrained from scratch with one thread each, `s_M6_s0` (Small) and `m_M12_s0` (Medium),
 reproduced every logged value and their final weights bit for bit. The logs of the 62 revision runs
