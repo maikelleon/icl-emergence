@@ -67,7 +67,7 @@ def fmt(x, nd=2):
 
 
 # ------------------------------------------------------------------ table 2
-GRID = [2, 4, 6, 8, 10, 12, 14, 16, 32, 64, 128, 256, 2048, 0]
+GRID = [2, 4, 6, 8, 10, 12, 14, 16, 24, 32, 64, 128, 256, 2048, 0]
 
 
 def table():
@@ -116,7 +116,7 @@ def fine(B=2000, seed=0):
     out = {}
     for size in ('s', 'm', 'l', 'xl'):
         Ms, units = [], []
-        for M in (4, 6, 8, 10, 12, 14, 16, 32):
+        for M in (4, 6, 8, 10, 12, 14, 16, 24, 32):
             u = pool_units(size, M)
             if size in ('l', 'xl'):   # single pool: use seeds as units
                 u = [om(e) for _, e in cell_finals(size, M, 'A')]
@@ -189,7 +189,7 @@ def arch():
                        ('Deep', ['dp_M16_s0', 'dp_M16_s1']),
                        ('Large', [f'l_M16_s{s}' for s in (0, 1, 2)]),
                        ('Small', [f's_M16_s{s}' for s in (1, 2)] + ['s_M16']),
-                       ('XLarge', ['xl_M16_s0'])):
+                       ('XLarge', [f'xl_M16_s{s}' for s in (0, 1, 2)])):
         fs = [(t, final(t)) for t in tags]
         fs = [(t, e) for t, e in fs if e]
         if not fs:

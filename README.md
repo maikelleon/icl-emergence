@@ -14,7 +14,7 @@ regression), three input dimensions, extended training, curriculum controls, and
 draws, and it probes the attention heads that each solution relies on.
 
 This repository holds the code that produced every number, table, and figure in the manuscript;
-the raw evaluation log of each of the 212 training runs; the final weights of the 62 runs added in
+the raw evaluation log of each of the 220 training runs; the final weights of the 70 runs added in
 the revision; the checkpoints of the revision's instrumented runs; and the five figures.
 
 ## Contents
@@ -33,8 +33,9 @@ code/
   sweep7.sh           signal-matched sparse family, dimension-sweep seeds, learning-rate control,
                       curriculum-free anchor
   sweep8.sh           XLarge architecture, remaining grid cells and seeds
-  queue_rev1.txt      the 62 revision runs, one command per line
-  runq.py             resumable two-worker job queue that ran queue_rev1.txt
+  queue_rev1.txt      the first 62 revision runs, one command per line
+  queue_rev2.txt      8 further runs: seeds for Large and XLarge near the boundary
+  runq.py             resumable two-worker job queue that ran both queue files
   mech_probe.py       checkpoint probes of the first instrumented campaign
   mech_probe2.py      checkpoint probes of the revision: any architecture or pool, zero- and
                       mean-ablation measured on fresh-task and pool contexts
@@ -47,7 +48,7 @@ code/
   rev_distinct.py     distinguishability of pool tasks (normalized dMMSE posterior entropy)
   rev_mech.py         mechanism summaries across seeds and architectures
   rev_figs.py         Figures 1 to 5
-  rev_tables.py       Tables 2 and 4 (LaTeX)
+  rev_tables.py       Tables 2 and A.1 (LaTeX)
   requirements.txt    pinned package versions
   results/            logs (*.jsonl), analysis outputs (rev_*.json), final weights (final_*.pt),
                       and checkpoints (ckpt_*.pt)
@@ -71,7 +72,7 @@ These steps read the shipped logs and weights and need no training. Run them fro
 
 ```
 python3 rev_figs.py fig1 fig2 fig3 fig4 fig5   # Figures 1 to 5, written to figs/
-python3 rev_tables.py                          # Table 2 and Table 4 (LaTeX), printed
+python3 rev_tables.py                          # Table 2 and Table A.1 (LaTeX), printed
 python3 rev_analysis.py                        # every aggregate quoted in the text, printed by section
 python3 rev_mech.py                            # mechanism summaries (results/rev_mech_summary.json)
 python3 rev_infer.py boot                      # bootstrap standard errors (results/rev_boot.json)
@@ -101,7 +102,7 @@ the corresponding runs in `sweep5.sh` and `sweep6.sh` regenerate them.
 ## Retraining
 
 Every run can be retrained from its command. The commands of the revision runs are listed in
-`queue_rev1.txt`, and those of the earlier campaigns are in the sweep scripts. Training writes
+`queue_rev1.txt` and `queue_rev2.txt`, and those of the earlier campaigns are in the sweep scripts. Training writes
 `<out>/<tag>.jsonl` and overwrites an existing log of the same tag, so retrain into a separate
 folder:
 
@@ -117,6 +118,7 @@ workers:
 
 ```
 python3 runq.py 1 queue_rev1.txt & python3 runq.py 2 queue_rev1.txt &
+python3 runq.py 1 queue_rev2.txt & python3 runq.py 2 queue_rev2.txt &   # after the first queue
 ```
 
 All randomness is seeded, and the evaluation sets are regenerated from fixed seeds. The revision
@@ -128,9 +130,9 @@ its wall-clock field (`secs`). Other hardware or library versions can change the
 
 On a clean copy of this repository, with the pinned versions on a Linux x86 CPU, the commands
 above regenerate the five figures, the six analysis files in `results/`, and the probe output of
-`mech_s_M2` byte for byte, and they print Tables 2 and 4 exactly as they appear in the manuscript.
+`mech_s_M2` byte for byte, and they print Tables 2 and A.1 exactly as they appear in the manuscript.
 Two runs retrained from scratch with one thread each, `s_M6_s0` (Small) and `m_M12_s0` (Medium),
-reproduced every logged value and their final weights bit for bit. The logs of the 62 revision runs
+reproduced every logged value and their final weights bit for bit. The logs of the 70 revision runs
 record the PyTorch version (2.15.0); the logs of the earlier campaigns do not.
 
 ## Log format

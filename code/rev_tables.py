@@ -5,7 +5,7 @@ import rev_analysis as ra
 GRID = {'s': [2, 4, 6, 8, 10, 12, 16, 32, 64, 128, 256, 2048, 0],
         'm': [2, 4, 8, 10, 12, 14, 16, 32, 64, 128, 256, 2048, 0],
         'l': [2, 4, 8, 10, 12, 14, 16, 32, 64, 128, 256, 2048, 0],
-        'xl': [2, 8, 16, 32, 128]}
+        'xl': [2, 8, 12, 16, 24, 32, 128]}
 
 
 def fr(x):
@@ -65,14 +65,14 @@ def inventory():
                 [f'm_M{M}' for M in (2, 16, 128, 2048, 0)] + [f'm_M{M}_s0' for M in (4, 8, 32, 64, 256)] +
                 [f'm_M2_s{s}' for s in (1, 2)])
     ph_l = done([f'l_M{M}_s{s}' for M in (2, 4, 8, 16, 32, 64, 128, 256, 2048, 0) for s in (0, 1, 2)])
-    ph_xl = done([f'xl_M{M}_s0' for M in (2, 8, 16, 32, 128)])
+    ph_xl = done([f'xl_M{M}_s0' for M in (2, 8, 12, 16, 24, 32, 128)] + [f'xl_M16_s{s}' for s in (1, 2)])
     add('Phase diagram', 'Small, Medium', 'dense, 4', r'2--2048, $\infty$', r'3 seeds ($\infty$: 1)', '20k', ph_s + ph_m)
     add('Phase diagram', 'Large', 'dense, 4', r'2--2048, $\infty$', r'3 seeds at 6 values; 1 elsewhere', '20k', ph_l)
-    add('Capacity extension', 'XLarge', 'dense, 4', '2, 8, 16, 32, 128', '1 seed', '20k', ph_xl)
+    add('Capacity extension', 'XLarge', 'dense, 4', '2, 8, 12, 16, 24, 32, 128', '3 seeds at 16; 1 elsewhere', '20k', ph_xl)
     fine_m = done([f'{p}_m_M{M}' for p in ('poolB', 'poolC') for M in (10, 12, 14)] + [f'm_M{M}_s0' for M in (10, 12, 14)])
     fine_s = done([f's_M{M}_s0' for M in (6, 10, 12)] + [f'poolB_s_M{M}' for M in (6, 8, 10, 12, 16)])
-    fine_l = done([f'l_M{M}_s0' for M in (10, 12, 14)])
-    add('Fine resolution', 'Small, Medium, Large', 'dense, 4', '6--14 (and 8, 16)', 'pools A--C (Medium), A--B (Small), A (Large)', '20k', fine_m + fine_s + fine_l)
+    fine_l = done([f'l_M{M}_s{s}' for M in (12, 14) for s in (0, 1, 2)])
+    add('Fine resolution', 'Small, Medium, Large', 'dense, 4', '6--14 (and 8, 16)', 'pools A--C (Medium), A--B (Small); 3 seeds on A (Large)', '20k', fine_m + fine_s + fine_l)
     add('Pool replication', 'Medium', 'dense, 4', '2, 8, 16, 32, 128', 'pools B, C', '20k',
         done([f'poolB_m_M{M}' for M in (2, 8, 16, 32, 128)] + [f'poolC_m_M{M}' for M in (8, 16, 32)]))
     longs = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, '*_long.jsonl'))]

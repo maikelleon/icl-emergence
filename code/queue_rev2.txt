@@ -1,0 +1,8 @@
+xl_M16_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 5 --dmodel 192 --heads 6 --seed 1 --tag xl_M16_s1
+xl_M16_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 5 --dmodel 192 --heads 6 --seed 2 --tag xl_M16_s2
+l_M12_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --layers 4 --dmodel 128 --heads 4 --seed 1 --tag l_M12_s1
+l_M12_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --layers 4 --dmodel 128 --heads 4 --seed 2 --tag l_M12_s2
+l_M14_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --layers 4 --dmodel 128 --heads 4 --seed 1 --tag l_M14_s1
+l_M14_s2	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --layers 4 --dmodel 128 --heads 4 --seed 2 --tag l_M14_s2
+xl_M12_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --layers 5 --dmodel 192 --heads 6 --seed 0 --tag xl_M12_s0
+xl_M24_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 24 --layers 5 --dmodel 192 --heads 6 --seed 0 --tag xl_M24_s0
