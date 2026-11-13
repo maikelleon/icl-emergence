@@ -87,7 +87,7 @@ def inventory():
     add('Architecture control', 'Wide, Deep', 'dense, 4', '16', '2 seeds', '20k', done(['wd_M16_s0', 'wd_M16_s1', 'dp_M16_s0', 'dp_M16_s1']))
     d2 = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'd2_m_M*.jsonl'))]
     d6 = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'd6_m_M*.jsonl'))]
-    add('Dimension sweep', 'Medium', 'dense, 2 and 6 (no curriculum at 2)', '2--32 and 4--128, with fine grids near the crossings', '3 seeds at crossing cells', '20k', done(d2 + d6))
+    add('Dimension sweep', 'Medium', 'dense, 2 and 6 (no curriculum at 2)', '2--32 and 4--128, finer near the crossings', '3 seeds at crossing cells', '20k', done(d2 + d6))
     sp = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'sp_m_M*.jsonl')) if not p.endswith('s0r.jsonl')]
     add('Sparse (preregistered)', 'Medium', r'sparse, $\tau_s = 1$', '2, 4, 8, 16, 32, 128', '2 seeds', '20k', done(sp))
     spm = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'spm_m_M*.jsonl'))]
