@@ -1,0 +1,4 @@
+hd2_M16_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 3 --dmodel 64 --heads 2 --seed 0 --tag hd2_M16_s0
+hd8_M16_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 3 --dmodel 64 --heads 8 --seed 0 --tag hd8_M16_s0
+hd2_M16_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 3 --dmodel 64 --heads 2 --seed 1 --tag hd2_M16_s1
+hd8_M16_s1	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 3 --dmodel 64 --heads 8 --seed 1 --tag hd8_M16_s1

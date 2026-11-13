@@ -205,6 +205,8 @@ def arch():
     for name, tags in (('Medium', [f'm_M16_s{s}' for s in (1, 2)] + ['m_M16']),
                        ('Wide', ['wd_M16_s0', 'wd_M16_s1']),
                        ('Deep', ['dp_M16_s0', 'dp_M16_s1']),
+                       ('2 heads', ['hd2_M16_s0', 'hd2_M16_s1']),
+                       ('8 heads', ['hd8_M16_s0', 'hd8_M16_s1']),
                        ('Large', [f'l_M16_s{s}' for s in (0, 1, 2)]),
                        ('Small', [f's_M16_s{s}' for s in (1, 2)] + ['s_M16']),
                        ('XLarge', [f'xl_M16_s{s}' for s in (0, 1, 2)])):

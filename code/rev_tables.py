@@ -84,7 +84,7 @@ def inventory():
     mech_r = done([f'mech_m_M{M}_s0r' for M in (2, 16, 2048)])
     add('Instrumented', 'Medium, Small', 'dense, 4', '2, 16, 2048', '3 seeds (Medium), 1 (Small)', '20k', mech + mech_s)
     add('Curriculum-free', 'Medium', 'dense, 4', r'16, 2048, $\infty$', '1 seed', '20k', done(['mechnc_m_M16', 'mechnc_m_M2048', 'nc_m_M0']))
-    add('Architecture control', 'Wide, Deep', 'dense, 4', '16', '2 seeds', '20k', done(['wd_M16_s0', 'wd_M16_s1', 'dp_M16_s0', 'dp_M16_s1']))
+    add('Architecture control', 'Wide, Deep, 2 and 8 heads', 'dense, 4', '16', '2 seeds', '20k', done(['wd_M16_s0', 'wd_M16_s1', 'dp_M16_s0', 'dp_M16_s1', 'hd2_M16_s0', 'hd2_M16_s1', 'hd8_M16_s0', 'hd8_M16_s1']))
     d2 = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'd2_m_M*.jsonl'))]
     d6 = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'd6_m_M*.jsonl'))]
     add('Dimension sweep', 'Medium', 'dense, 2 and 6 (no curriculum at 2)', '2--32 and 4--128, finer near the crossings', '3 seeds at crossing cells', '20k', done(d2 + d6))

@@ -15,7 +15,7 @@ draws, and it probes the attention heads that each solution relies on. A compani
 in-context regression across the pretraining checkpoints of the Pythia language models.
 
 This repository holds the code that produced every number, table, and figure in the manuscript;
-the raw evaluation log of each of the 227 training runs; the final weights of the 77 runs added in
+the raw evaluation log of each of the 231 training runs; the final weights of the 81 runs added in
 the revision; the checkpoints of the revision's instrumented runs; the six figures; and the script
 and per-prompt outputs of the probe of pretrained checkpoints.
 
@@ -39,7 +39,8 @@ code/
   queue_rev2.txt      8 further runs: seeds for Large and XLarge near the boundary
   queue_rev3.txt      7 further runs: a second pool draw for Large and XLarge near the boundary,
                       and Large at M = 24 on the first pool draw
-  runq.py             resumable two-worker job queue that ran the three queue files
+  queue_rev4.txt      4 further runs: Medium with 2 and 8 heads at M = 16 (head-count control)
+  runq.py             resumable two-worker job queue that ran the four queue files
   mech_probe.py       checkpoint probes of the first instrumented campaign
   mech_probe2.py      checkpoint probes of the revision: any architecture or pool, zero- and
                       mean-ablation measured on fresh-task and pool contexts
@@ -110,7 +111,7 @@ the corresponding runs in `sweep5.sh` and `sweep6.sh` regenerate them.
 ## Retraining
 
 Every run can be retrained from its command. The commands of the revision runs are listed in
-`queue_rev1.txt`, `queue_rev2.txt`, and `queue_rev3.txt`, and those of the earlier campaigns are in the sweep scripts. Training writes
+`queue_rev1.txt` to `queue_rev4.txt`, and those of the earlier campaigns are in the sweep scripts. Training writes
 `<out>/<tag>.jsonl` and overwrites an existing log of the same tag, so retrain into a separate
 folder:
 
@@ -128,6 +129,7 @@ workers:
 python3 runq.py 1 queue_rev1.txt & python3 runq.py 2 queue_rev1.txt &
 python3 runq.py 1 queue_rev2.txt & python3 runq.py 2 queue_rev2.txt &   # after the first queue
 python3 runq.py 1 queue_rev3.txt & python3 runq.py 2 queue_rev3.txt &   # after the second queue
+python3 runq.py 1 queue_rev4.txt & python3 runq.py 2 queue_rev4.txt &   # after the third queue
 ```
 
 All randomness is seeded, and the evaluation sets are regenerated from fixed seeds. The revision
@@ -141,7 +143,7 @@ On a clean copy of this repository, with the pinned versions on a Linux x86 CPU,
 above regenerate the six figures, the six analysis files in `results/`, and the probe output of
 `mech_s_M2` byte for byte, and they print Tables 2 and A.1 exactly as they appear in the manuscript.
 Two runs retrained from scratch with one thread each, `s_M6_s0` (Small) and `m_M12_s0` (Medium),
-reproduced every logged value and their final weights bit for bit. The logs of the 77 revision runs
+reproduced every logged value and their final weights bit for bit. The logs of the 81 revision runs
 record the PyTorch version (2.15.0); the logs of the earlier campaigns do not.
 
 ## Log format
