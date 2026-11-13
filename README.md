@@ -11,11 +11,13 @@ or the family's exact Bayes predictor) have closed forms. It maps where behavior
 first toward the second as the pool grows, across four architectures from 26,497 to 2,230,849
 parameters, three task families (dense linear, sparse linear, and nonlinear random-feature
 regression), three input dimensions, extended training, curriculum controls, and independent pool
-draws, and it probes the attention heads that each solution relies on.
+draws, and it probes the attention heads that each solution relies on. A companion probe evaluates
+in-context regression across the pretraining checkpoints of the Pythia language models.
 
 This repository holds the code that produced every number, table, and figure in the manuscript;
-the raw evaluation log of each of the 220 training runs; the final weights of the 70 runs added in
-the revision; the checkpoints of the revision's instrumented runs; and the five figures.
+the raw evaluation log of each of the 227 training runs; the final weights of the 77 runs added in
+the revision; the checkpoints of the revision's instrumented runs; the six figures; and the script
+and per-prompt outputs of the probe of pretrained checkpoints.
 
 ## Contents
 
@@ -35,7 +37,9 @@ code/
   sweep8.sh           XLarge architecture, remaining grid cells and seeds
   queue_rev1.txt      the first 62 revision runs, one command per line
   queue_rev2.txt      8 further runs: seeds for Large and XLarge near the boundary
-  runq.py             resumable two-worker job queue that ran both queue files
+  queue_rev3.txt      7 further runs: a second pool draw for Large and XLarge near the boundary,
+                      and Large at M = 24 on the first pool draw
+  runq.py             resumable two-worker job queue that ran the three queue files
   mech_probe.py       checkpoint probes of the first instrumented campaign
   mech_probe2.py      checkpoint probes of the revision: any architecture or pool, zero- and
                       mean-ablation measured on fresh-task and pool contexts
@@ -47,12 +51,14 @@ code/
                       demonstration diversity at inference, sparse-family reference distances
   rev_distinct.py     distinguishability of pool tasks (normalized dMMSE posterior entropy)
   rev_mech.py         mechanism summaries across seeds and architectures
-  rev_figs.py         Figures 1 to 5
+  rev_figs.py         Figures 1 to 6
   rev_tables.py       Tables 2 and A.1 (LaTeX)
   requirements.txt    pinned package versions
   results/            logs (*.jsonl), analysis outputs (rev_*.json), final weights (final_*.pt),
                       and checkpoints (ckpt_*.pt)
-  figs/               Figures 1 to 5 as they appear in the manuscript
+  figs/               Figures 1 to 6 as they appear in the manuscript
+  llm_probe/          probe of in-context regression across Pythia checkpoints (Section 9.2,
+                      Figure 6): script, Colab notebooks, per-prompt results, and its own README
 ```
 
 ## Requirements
@@ -63,7 +69,9 @@ Python 3.13 and the packages pinned in `code/requirements.txt` (PyTorch, NumPy, 
 pip install -r code/requirements.txt
 ```
 
-A CPU is sufficient for everything, including training. The CPU-only build of PyTorch is enough:
+A CPU is sufficient for everything, including training, except rerunning the probe of pretrained
+checkpoints, which needs a GPU for practical speed (see `code/llm_probe/README.md`); its shipped
+results regenerate Figure 6 on a CPU. The CPU-only build of PyTorch is enough:
 `pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu`.
 
 ## Reproducing the figures, tables, and quoted numbers
@@ -71,7 +79,7 @@ A CPU is sufficient for everything, including training. The CPU-only build of Py
 These steps read the shipped logs and weights and need no training. Run them from `code/`:
 
 ```
-python3 rev_figs.py fig1 fig2 fig3 fig4 fig5   # Figures 1 to 5, written to figs/
+python3 rev_figs.py fig1 fig2 fig3 fig4 fig5 fig6   # Figures 1 to 6, written to figs/
 python3 rev_tables.py                          # Table 2 and Table A.1 (LaTeX), printed
 python3 rev_analysis.py                        # every aggregate quoted in the text, printed by section
 python3 rev_mech.py                            # mechanism summaries (results/rev_mech_summary.json)
@@ -102,7 +110,7 @@ the corresponding runs in `sweep5.sh` and `sweep6.sh` regenerate them.
 ## Retraining
 
 Every run can be retrained from its command. The commands of the revision runs are listed in
-`queue_rev1.txt` and `queue_rev2.txt`, and those of the earlier campaigns are in the sweep scripts. Training writes
+`queue_rev1.txt`, `queue_rev2.txt`, and `queue_rev3.txt`, and those of the earlier campaigns are in the sweep scripts. Training writes
 `<out>/<tag>.jsonl` and overwrites an existing log of the same tag, so retrain into a separate
 folder:
 
@@ -119,6 +127,7 @@ workers:
 ```
 python3 runq.py 1 queue_rev1.txt & python3 runq.py 2 queue_rev1.txt &
 python3 runq.py 1 queue_rev2.txt & python3 runq.py 2 queue_rev2.txt &   # after the first queue
+python3 runq.py 1 queue_rev3.txt & python3 runq.py 2 queue_rev3.txt &   # after the second queue
 ```
 
 All randomness is seeded, and the evaluation sets are regenerated from fixed seeds. The revision
@@ -129,10 +138,10 @@ its wall-clock field (`secs`). Other hardware or library versions can change the
 ## Verification
 
 On a clean copy of this repository, with the pinned versions on a Linux x86 CPU, the commands
-above regenerate the five figures, the six analysis files in `results/`, and the probe output of
+above regenerate the six figures, the six analysis files in `results/`, and the probe output of
 `mech_s_M2` byte for byte, and they print Tables 2 and A.1 exactly as they appear in the manuscript.
 Two runs retrained from scratch with one thread each, `s_M6_s0` (Small) and `m_M12_s0` (Medium),
-reproduced every logged value and their final weights bit for bit. The logs of the 70 revision runs
+reproduced every logged value and their final weights bit for bit. The logs of the 77 revision runs
 record the PyTorch version (2.15.0); the logs of the earlier campaigns do not.
 
 ## Log format

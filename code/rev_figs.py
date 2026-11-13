@@ -439,6 +439,60 @@ def fig2():
     fig.tight_layout(w_pad=2.4)
     save(fig, 'fig2_demonstrations.png')
 
+# ---------------------------------------------------------------- Figure 6: pretrained checkpoints
+PYTHIA = {'70m': 7.0e7, '160m': 1.6e8, '410m': 4.1e8, '1b': 1.0e9, '1.4b': 1.4e9, '2.8b': 2.8e9}
+PYCOL = ['#5bb6cf', '#3a9fc0', '#2486a8', '#166c8c', '#0e526d', '#083a4f']   # one validated hue ramp, light to dark
+
+
+def probe_results():
+    """Per-prompt results of the probe of Pythia checkpoints (code/llm_probe/results)."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'llm_probe'))
+    import llm_probe as lp
+    res = lp.load_results(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'llm_probe', 'results'))
+    return lp, res
+
+
+def fig6():
+    lp, res = probe_results()
+    sizes = [z for z in PYTHIA if any(m == z for m, _, _ in res)]
+    fig, (a, b) = plt.subplots(1, 2, figsize=(7.2, 3.0), gridspec_kw=dict(width_ratios=[1.45, 1]))
+    any_rows = next(iter(res.values()))
+    s0 = lp.summarize_rows(any_rows)
+    base_ctx, base_nn = s0['mse_ctxmean'] / s0['mse_bayes'], s0['mse_nn1'] / s0['mse_bayes']
+    for i, z in enumerate(sizes):
+        steps = sorted(st for m, st, k in res if m == z and k == 10)
+        rho = [lp.summarize_rows(res[(z, st, 10)])['rho'] for st in steps]
+        a.plot(steps, rho, '-o', color=PYCOL[i], ms=3.6, lw=1.5, label=f'Pythia-{z.upper().replace("M", "M")}', **MK)
+    for ax in (a, b):
+        ax.axhline(base_ctx, **REF); ax.axhline(base_nn, color=MUTED, lw=1.1, ls=(0, (1, 2)))
+        ax.axhline(1, color=BASE, lw=0.9)
+    a.text(1.02, base_ctx, 'average of\ndemonstrated outputs', transform=a.get_yaxis_transform(),
+           fontsize=7, color=MUTED, va='center')
+    a.text(1.02, base_nn, 'output of nearest\ndemonstration', transform=a.get_yaxis_transform(),
+           fontsize=7, color=MUTED, va='center')
+    a.text(1.02, 1, 'Bayes', transform=a.get_yaxis_transform(), fontsize=7, color=MUTED, va='center')
+    a.set_xscale('log'); a.set_xticks([512, 1000, 4000, 16000, 64000, 143000],
+                                      ['512', '1k', '4k', '16k', '64k', '143k']); a.minorticks_off()
+    logy(a, [1, 3, 10, 30, 100, 300, 1000])
+    a.set_xlabel('pretraining step'); a.set_ylabel('error ratio to the Bayes predictor')
+    a.legend(loc='lower left', fontsize=7.6)
+    # (B) final checkpoint against size, with 95% bootstrap intervals over prompts
+    xs, ys, lo, hi = [], [], [], []
+    for i, z in enumerate(sizes):
+        last = max(st for m, st, k in res if m == z and k == 10)
+        sm = lp.summarize_rows(res[(z, last, 10)], boot=1000)
+        xs.append(PYTHIA[z]); ys.append(sm['rho']); lo.append(sm['rho_lo']); hi.append(sm['rho_hi'])
+        b.errorbar([PYTHIA[z]], [sm['rho']], yerr=[[sm['rho'] - sm['rho_lo']], [sm['rho_hi'] - sm['rho']]],
+                   fmt='o', color=PYCOL[i], ms=4.8, capsize=0, elinewidth=1.4, mec='white', mew=0.9)
+    b.plot(xs, ys, '-', color=MUTED, lw=0.9, zorder=1)
+    b.set_xscale('log'); b.set_xticks([PYTHIA[z] for z in sizes], [z.upper() for z in sizes]); b.minorticks_off()
+    logy(b, [1, 3, 10, 30, 100, 300])
+    b.set_xlabel('model size (parameters)'); b.set_ylabel('error ratio, final checkpoint')
+    letter(a, 'A'); letter(b, 'B')
+    fig.tight_layout(w_pad=2.2)
+    save(fig, 'fig6_pretrained.png')
+
+
 if __name__ == '__main__':
     for name in sys.argv[1:]:
         globals()[name]()

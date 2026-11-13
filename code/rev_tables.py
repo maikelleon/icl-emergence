@@ -4,7 +4,7 @@ import rev_analysis as ra
 
 GRID = {'s': [2, 4, 6, 8, 10, 12, 16, 32, 64, 128, 256, 2048, 0],
         'm': [2, 4, 8, 10, 12, 14, 16, 32, 64, 128, 256, 2048, 0],
-        'l': [2, 4, 8, 10, 12, 14, 16, 32, 64, 128, 256, 2048, 0],
+        'l': [2, 4, 8, 10, 12, 14, 16, 24, 32, 64, 128, 256, 2048, 0],
         'xl': [2, 8, 12, 16, 24, 32, 128]}
 
 
@@ -71,10 +71,12 @@ def inventory():
     add('Capacity extension', 'XLarge', 'dense, 4', '2, 8, 12, 16, 24, 32, 128', '3 seeds at 16; 1 elsewhere', '20k', ph_xl)
     fine_m = done([f'{p}_m_M{M}' for p in ('poolB', 'poolC') for M in (10, 12, 14)] + [f'm_M{M}_s0' for M in (10, 12, 14)])
     fine_s = done([f's_M{M}_s0' for M in (6, 10, 12)] + [f'poolB_s_M{M}' for M in (6, 8, 10, 12, 16)])
-    fine_l = done([f'l_M{M}_s{s}' for M in (12, 14) for s in (0, 1, 2)])
-    add('Fine resolution', 'Small, Medium, Large', 'dense, 4', '6--14 (and 8, 16)', 'pools A--C (Medium), A--B (Small); 3 seeds on A (Large)', '20k', fine_m + fine_s + fine_l)
-    add('Pool replication', 'Medium', 'dense, 4', '2, 8, 16, 32, 128', 'pools B, C', '20k',
+    fine_l = done([f'l_M{M}_s{s}' for M in (12, 14) for s in (0, 1, 2)] + ['l_M24_s0'])
+    add('Fine resolution', 'Small, Medium, Large', 'dense, 4', '6--14 (and 8, 16); Large: 12, 14, 24', 'pools A--C (Medium), A--B (Small); 3 seeds at 12, 14 (Large)', '20k', fine_m + fine_s + fine_l)
+    add('Pool replication', 'Medium', 'dense, 4', '2, 8, 16, 32, 128', 'pool B; pool C at 8, 16, 32', '20k',
         done([f'poolB_m_M{M}' for M in (2, 8, 16, 32, 128)] + [f'poolC_m_M{M}' for M in (8, 16, 32)]))
+    add('Pool replication', 'Large, XLarge', 'dense, 4', '12, 14, 16, 24 (Large); 16, 24 (XLarge)', 'pool B, 1 seed', '20k',
+        done([f'poolB_l_M{M}' for M in (12, 14, 16, 24)] + [f'poolB_xl_M{M}' for M in (16, 24)]))
     longs = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, '*_long.jsonl'))]
     add('Extended training', 'Small, Medium, Large', 'dense, 4', '8, 16, 32, 64', '1--2 seeds; 2 learning rates', '100k', done(longs))
     mech = done(['mech_m_M2', 'mech_m_M16', 'mech_m_M2048'] + [f'mech_m_M{M}_s{s}' for M in (2, 16, 2048) for s in (1, 2)])
@@ -85,7 +87,7 @@ def inventory():
     add('Architecture control', 'Wide, Deep', 'dense, 4', '16', '2 seeds', '20k', done(['wd_M16_s0', 'wd_M16_s1', 'dp_M16_s0', 'dp_M16_s1']))
     d2 = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'd2_m_M*.jsonl'))]
     d6 = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'd6_m_M*.jsonl'))]
-    add('Dimension sweep', 'Medium', 'dense, 2 and 6', '2--32 and 4--128, with fine grids near the crossings', '3 seeds at crossing cells', '20k', done(d2 + d6))
+    add('Dimension sweep', 'Medium', 'dense, 2 and 6 (no curriculum at 2)', '2--32 and 4--128, with fine grids near the crossings', '3 seeds at crossing cells', '20k', done(d2 + d6))
     sp = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'sp_m_M*.jsonl')) if not p.endswith('s0r.jsonl')]
     add('Sparse (preregistered)', 'Medium', r'sparse, $\tau_s = 1$', '2, 4, 8, 16, 32, 128', '2 seeds', '20k', done(sp))
     spm = [os.path.basename(p)[:-6] for p in glob.glob(os.path.join(ra.RES, 'spm_m_M*.jsonl'))]

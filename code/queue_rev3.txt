@@ -1,0 +1,7 @@
+poolB_xl_M16	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 5 --dmodel 192 --heads 6 --seed 0 --pool-seed-base 2000 --tag poolB_xl_M16
+poolB_l_M12	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 12 --layers 4 --dmodel 128 --heads 4 --seed 0 --pool-seed-base 2000 --tag poolB_l_M12
+poolB_l_M14	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 14 --layers 4 --dmodel 128 --heads 4 --seed 0 --pool-seed-base 2000 --tag poolB_l_M14
+poolB_xl_M24	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 24 --layers 5 --dmodel 192 --heads 6 --seed 0 --pool-seed-base 2000 --tag poolB_xl_M24
+poolB_l_M16	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 16 --layers 4 --dmodel 128 --heads 4 --seed 0 --pool-seed-base 2000 --tag poolB_l_M16
+poolB_l_M24	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 24 --layers 4 --dmodel 128 --heads 4 --seed 0 --pool-seed-base 2000 --tag poolB_l_M24
+l_M24_s0	python3 icl_pilot.py --steps 20000 --eval-every 2000 --curr --auto-resume --save-final --M 24 --layers 4 --dmodel 128 --heads 4 --seed 0 --tag l_M24_s0

@@ -111,15 +111,33 @@ def crossing(Ms, vals):
     return None, None
 
 
+def fine_seeds(size, Ms=(8, 12, 14, 16, 24, 32), B=2000, seed=0):
+    """Crossing on pool draw A with seeds as bootstrap units (Large and XLarge)."""
+    rng = random.Random(seed)
+    xs, units = [], []
+    for M in Ms:
+        u = [om(e) for _, e in cell_finals(size, M, 'A')]
+        if u:
+            xs.append(M); units.append(u)
+    mstar, iv = crossing(xs, units)
+    boots = []
+    for _ in range(B):
+        m, _ = crossing(xs, [[rng.choice(u) for _ in u] for u in units])
+        if m is not None:
+            boots.append(m)
+    boots.sort()
+    lo, hi = boots[int(0.05 * len(boots))], boots[int(0.95 * len(boots)) - 1]
+    print(f'{SIZES[size]:7s} pool A, seeds as units: M*={mstar} interval={iv} 90%CI=({lo},{hi})')
+    return mstar, iv, lo, hi
+
+
 def fine(B=2000, seed=0):
     rng = random.Random(seed)
     out = {}
     for size in ('s', 'm', 'l', 'xl'):
         Ms, units = [], []
         for M in (4, 6, 8, 10, 12, 14, 16, 24, 32):
-            u = pool_units(size, M)
-            if size in ('l', 'xl'):   # single pool: use seeds as units
-                u = [om(e) for _, e in cell_finals(size, M, 'A')]
+            u = pool_units(size, M)   # one unit per pool draw, seeds within a draw averaged
             if u:
                 Ms.append(M); units.append(u)
         if len(Ms) < 2:
@@ -142,7 +160,7 @@ def fine(B=2000, seed=0):
     return out
 
 
-def fine_per_pool(size, Ms=(4, 6, 8, 10, 12, 14, 16, 32)):
+def fine_per_pool(size, Ms=(4, 6, 8, 10, 12, 14, 16, 24, 32)):
     """Crossing estimated separately for each pool draw (seeds within a draw averaged)."""
     out = {}
     for pool in ('A', 'B', 'C'):
@@ -271,3 +289,8 @@ if __name__ == '__main__':
         if 'all' in secs or s in secs:
             print(f'\n===== {s} =====')
             globals()[s]()
+            if s == 'fine':
+                for size in ('m', 'l', 'xl'):
+                    fine_per_pool(size)
+                for size in ('l', 'xl'):
+                    fine_seeds(size)
