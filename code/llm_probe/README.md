@@ -43,9 +43,10 @@ varied, and it cannot separate capacity from the ability to read and write numbe
 `results/probe_<size>_step<step>.jsonl` holds one JSON record per prompt: model, checkpoint,
 task id, k, the query target `yq`, the prediction `pred`, the first characters of the raw answer,
 the flags `parsed` and `clipped`, and the four reference predictions (`ref_bayes`, `ref_ols`,
-`ref_ctxmean`, `ref_nn1`). The shipped results cover Pythia-70M, -160M, -410M, and -1B (deduped)
-at steps 512, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000, and 143000, 200 prompts each.
-They were produced on a Colab T4 GPU in half precision.
+`ref_ctxmean`, `ref_nn1`). The shipped results cover all six sizes, Pythia-70M, -160M, -410M, -1B, -1.4B, and -2.8B
+(deduped), at steps 512, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000, and 143000, 200
+prompts each. They were produced on Colab T4 GPUs in half precision, in two sessions (the two
+largest sizes in the second).
 
 ## Reproducing the figure and the numbers
 

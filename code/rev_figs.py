@@ -485,7 +485,9 @@ def fig6():
         b.errorbar([PYTHIA[z]], [sm['rho']], yerr=[[sm['rho'] - sm['rho_lo']], [sm['rho_hi'] - sm['rho']]],
                    fmt='o', color=PYCOL[i], ms=4.8, capsize=0, elinewidth=1.4, mec='white', mew=0.9)
     b.plot(xs, ys, '-', color=MUTED, lw=0.9, zorder=1)
-    b.set_xscale('log'); b.set_xticks([PYTHIA[z] for z in sizes], [z.upper() for z in sizes]); b.minorticks_off()
+    # labels of sizes closer than a factor of 1.6 to the previous one go on a second line
+    labs = [('\n' if i and PYTHIA[z] / PYTHIA[sizes[i - 1]] < 1.6 else '') + z.upper() for i, z in enumerate(sizes)]
+    b.set_xscale('log'); b.set_xticks([PYTHIA[z] for z in sizes], labs); b.minorticks_off()
     logy(b, [1, 3, 10, 30, 100, 300])
     b.set_xlabel('model size (parameters)'); b.set_ylabel('error ratio, final checkpoint')
     letter(a, 'A'); letter(b, 'B')
